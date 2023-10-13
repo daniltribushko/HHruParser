@@ -42,7 +42,7 @@ func (u *UrlService) AddParameter(key string, value string){
 		}
 	}else{
 		//Проверка указаны ли параметры в url
-		if strings.Contains(oldUrl, "?") == true && strings.Contains(oldUrl, "=") {
+		if strings.Contains(oldUrl, "?") && strings.Contains(oldUrl, "=") {
 			newUrl.WriteString("&")
 		}
 		newUrl.WriteString(key)

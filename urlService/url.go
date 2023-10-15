@@ -42,7 +42,7 @@ func (u *UrlService) AddParameter(key string, value string){
 		}
 	}else{
 		//Проверка указаны ли параметры в url
-		if strings.Contains(oldUrl, "?") == true && strings.Contains(oldUrl, "=") {
+		if strings.Contains(oldUrl, "?") && strings.Contains(oldUrl, "=") {
 			newUrl.WriteString("&")
 		}
 		newUrl.WriteString(key)
@@ -89,12 +89,42 @@ func (u *UrlService) AddParameters(parameters map [string]string){
 }
 
 /**
+	Добавление параметра в путь url
+*/
+func (u *UrlService) AddPathParameter(value string){
+	oldUrl := u.Url
+	var newUrl strings.Builder
+	newUrl.WriteString(oldUrl)
+	if !strings.EqualFold(u.Url[:len(u.Url)-1], "/") {
+		newUrl.WriteString("/")
+	}
+
+	newUrl.WriteString(value)
+	(*u).Url = newUrl.String()
+}
+
+/**
+	Удаление последней части путья url
+*/
+func (u *UrlService) DeleteLastPathPart() {
+	var mas []string = strings.Split(u.Url, "/")
+	var newUrl strings.Builder = strings.Builder{}
+	for index, value := range mas[:len(mas)-1] {
+		newUrl.WriteString(value)
+		if (index != len(mas)-2){
+			newUrl.WriteString("/")
+		}
+	}
+	(*u).Url = newUrl.String()
+}
+
+/**
 	Замена значения параметра в url адресе
 */
 func replaceValueUrl(key string, value string, url string) string {
 	var result string
 
-	re, err := regexp.Compile(fmt.Sprintf(`&%s=\w*|\?%s=\w*`, key, key))
+	re, err := regexp.Compile(fmt.Sprintf(`&%s=.*&|\?%s=.*&|&%s=.*|\?%s=.*`, key, key, key, key))
 	if err != nil {
 		panic(err)
 	}
@@ -103,9 +133,11 @@ func replaceValueUrl(key string, value string, url string) string {
 	if matched {
 		findString := re.FindString(url)
 		oldVaue := strings.Split(findString, "=")[1]
+		if strings.Contains(oldVaue, "&") {
+			oldVaue = oldVaue[:len(oldVaue)-1]
+		}
 		newFindString := strings.Replace(findString, oldVaue, value, -1)
 		result = strings.Replace(url, findString, newFindString, 1)
 	}
-
 	return result
 }

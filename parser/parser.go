@@ -43,8 +43,8 @@ func getAllVacanciesIdFromRussia() map[models.ProgrammingLanguage][]models.Vacan
 		for i := 0; i < maxCountPage; i++ {
 			//Добавляем в адрес номер страницы в качестве параметра
 			urlUk.AddParameter("page", strconv.Itoa(i))
-			//Делаем ограничения на 1 секунду
-			time.Sleep(time.Second)
+			//Делаем ограничения на 500 милисекунду
+			time.Sleep(time.Second / 2)
 			body := sendGetRequest(url.Url)
 			//Если ответ на запрос пустой то выходим из цикла с номерами страниц
 			if body == nil {
@@ -88,8 +88,8 @@ func GetAllVacanciesFromRussia() map[models.ProgrammingLanguage][]models.Vacancy
 		var vacancies []models.VacancyJson = []models.VacancyJson{}
 		var length int = len(id)
 		for index, value := range id {
-			//Задержка 500 секунд
-			time.Sleep(time.Second / 2)
+			//Задержка 250 милисекунд
+			time.Sleep(time.Second / 4)
 			//Добавляем в url адрес id вакансии
 			su.AddPathParameter(value.Id)
 			//Получаем ответ
@@ -102,15 +102,14 @@ func GetAllVacanciesFromRussia() map[models.ProgrammingLanguage][]models.Vacancy
 			//Удаляем id из адреса
 			su.DeleteLastPathPart()
 			//Преобразуем ответ на получение вакансии
-			var vacanciesResponse models.VacancyJsonResponse
-			err := json.Unmarshal(body, &vacanciesResponse)
+			var vacancy models.VacancyJson
+			err := json.Unmarshal(body, &vacancy)
 
 			if err != nil {
 				fmt.Println(err)
 				return nil
 			}
 			//Добавляем вакансию в список вакансий
-			vacancy := vacanciesResponse.Vacancies
 			vacancies = append(vacancies, vacancy)
 
 			log.Printf("%s - Вакансия получена %d/%d", string(pl), index + 1, length)
@@ -128,21 +127,15 @@ func GetAllVacanciesFromRussia() map[models.ProgrammingLanguage][]models.Vacancy
 */
 func sendGetRequest(url string) []byte {
 	re, err := http.Get(url)
-
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
-
 	log.Println(url)
-	log.Println(re.Request.Response.StatusCode)
-
 	body, err := io.ReadAll(re.Body)
-
 	if err != nil {
 		fmt.Println(err)
 		return nil
 	}
-
 	return body
 }

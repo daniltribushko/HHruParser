@@ -57,8 +57,8 @@ const (
 	FlyInFlyOut Schedule = "FlyInFlyOut"
 )
 
-/**
-	Получение названия языка программирования в url кодировке
+/*
+Получение названия языка программирования в url кодировке
 */
 func (p ProgrammingLanguage) GetUrlName() string {
 	var result string
@@ -72,65 +72,65 @@ func (p ProgrammingLanguage) GetUrlName() string {
 	default:
 		result = string(p)
 	}
-
 	return result
 }
 
-/**
-	Преобразование опыта работы из строки в тип Experience
+/*
+Преобразование опыта работы из строки в тип Experience
 */
-func (e Experience) GetExperienceFromString(experience string) Experience {
+func GetExperienceFromString(experience string) Experience {
 	var result Experience
 	switch experience {
-	case "NoExperience":
+	case "noExperience":
 		result = NoExperience
-	case "Between1And3":
+	case "between1And3":
 		result = Between1And3
-	case "Between3And6":
+	case "between3And6":
 		result = Between3And6
-	case "MoreThan6":
+	case "moreThan6":
 		result = MoreThan6
 	}
 
 	return result
 }
 
-/**
-	Преобразование типы работы из строки в тип Employment
+/*
+Преобразование типы работы из строки в тип Employment
 */
-func (e Employment) GetEmploymentFromString(employment string) Employment {
+func GetEmploymentFromString(employment string) Employment {
 	var result Employment
 	switch employment {
-	case "Full":
+	case "full":
 		result = Full
-	case "Part":
+	case "part":
 		result = Part
-	case "Probation":
+	case "probation":
 		result = Probation
-	case "Project":
+	case "project":
 		result = Project
-	case "Volunteer":
+	case "volunteer":
 		result = Volunteer
 	}
 
 	return result
 }
 
-/**
-	Преобразование расписание работы из строки в тип Schedule
+/*
+*
+Преобразование расписание работы из строки в тип Schedule
 */
-func (s Schedule) GetScheduleFromString(schedule string) Schedule {
+func GetScheduleFromString(schedule string) Schedule {
 	var result Schedule
 	switch schedule {
-	case "FullDay":
+	case "fullDay":
 		result = FullDay
-	case "Shift":
+	case "shift":
 		result = Shift
-	case "Flexible":
+	case "flexible":
 		result = Flexible
-	case "Remote":
+	case "remote":
 		result = Remote
-	case "FlyInFlyOut":
+	case "flyInFlyOut":
 		result = FlyInFlyOut
 	}
 	return result

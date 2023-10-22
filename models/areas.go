@@ -5,3 +5,8 @@ type AreaJson struct{
 	Name string `json:"name"`
 }
 
+type AreaDb struct {
+	Id int
+	AreaId string
+	AreaName string
+}

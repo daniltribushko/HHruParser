@@ -1,0 +1,6 @@
+create table skills(
+	Id SERIAL PRIMARY KEY,
+	Name VARCHAR(255),
+	VacancyId INTEGER REFERENCES vacancies(Id) ON DELETE CASCADE 
+	ON UPDATE CASCADE NOT NULL
+);
